@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 /**
  * Sample page
@@ -40,9 +41,10 @@ public class LoginPage extends Page {
         signInButton.click();
     }
 
-    public void loginTo(String strUserName, String password) {
+    public HomePage loginTo(String strUserName, String password) {
         this.setEmailTextBox(strUserName);
         this.setPasswordTextBox(password);
         this.clickSignIn();
+        return PageFactory.initElements(driver, HomePage.class);
     }
 }
