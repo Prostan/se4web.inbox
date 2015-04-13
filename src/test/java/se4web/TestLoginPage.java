@@ -38,7 +38,14 @@ public class TestLoginPage extends TestNgTestBase {
   }
 
   @Test (priority=2)
-  public void testLoginRightCredentials() {
+  public void testLoginIncorrectCredentials() {
+    driver.get(baseUrl);
+    homepage = loginpage.loginTo("se4web@gmail.com", "se4web");
+    Assert.assertFalse(homepage.getTitle().startsWith("Inbox"));
+  }
+
+  @Test (priority=3)
+  public void testLoginCorrectCredentials() {
     driver.get(baseUrl);
     homepage = loginpage.loginTo("se4web@gmail.com", "Se4webSe4web");
     Assert.assertTrue(homepage.getTitle().startsWith("Inbox"));
