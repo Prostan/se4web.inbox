@@ -19,35 +19,40 @@ public class TestLoginPage extends TestNgTestBase {
     loginpage = PageFactory.initElements(driver, LoginPage.class);
   }
 
-  @Test (priority=1)
+  @Test (groups={"login"})
   public void testLoginPageHasTitle() {
     driver.get(baseUrl);
     Assert.assertFalse("".equals(loginpage.getTitle()));
+    System.out.println("testLoginPageHasTitle");
   }
 
-  @Test (priority=1)
+  @Test (groups={"login","usability"})
   public void testSignInButtonDisplayed() {
     driver.get(baseUrl);
     Assert.assertTrue(loginpage.signInButton.isDisplayed());
+    System.out.println("testSignInButtonDisplayed");
   }
 
-  @Test (priority=1)
+  @Test (groups={"login","usability"})
   public void testSignInButtonEnabled() {
     driver.get(baseUrl);
     Assert.assertTrue(loginpage.signInButton.isEnabled());
+    System.out.println("testSignInButtonEnabled");
   }
 
-  @Test (priority=2)
+  @Test (dependsOnGroups={"login"})
   public void testLoginIncorrectCredentials() {
     driver.get(baseUrl);
     homepage = loginpage.loginTo("se4web@gmail.com", "se4web");
     Assert.assertFalse(homepage.getTitle().startsWith("Inbox"));
+    System.out.println("testLoginIncorrectCredentials");
   }
 
-  @Test (priority=3)
+  @Test (dependsOnMethods={"testLoginIncorrectCredentials"})
   public void testLoginCorrectCredentials() {
     driver.get(baseUrl);
     homepage = loginpage.loginTo("se4web@gmail.com", "Se4webSe4web");
     Assert.assertTrue(homepage.getTitle().startsWith("Inbox"));
+    System.out.println("testLoginCorrectCredentials");
   }
 }
