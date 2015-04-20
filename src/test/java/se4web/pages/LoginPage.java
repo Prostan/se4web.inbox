@@ -7,11 +7,15 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.LoadableComponent;
+import org.testng.Assert;
 
 /**
  * Sample page
  */
-public class LoginPage extends Page {
+public class LoginPage extends LoadableComponent<LoginPage> {
+
+    private final WebDriver driver;
 
     @FindBy(how = How.ID, using = "Email")
     @CacheLookup
@@ -25,8 +29,21 @@ public class LoginPage extends Page {
     @CacheLookup
     public WebElement signInButton;
 
-    public LoginPage(WebDriver webDriver) {
-        super(webDriver);
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+
+        PageFactory.initElements(driver, this);
+    }
+
+    @Override
+    protected void isLoaded() throws Error {
+        String url = driver.getCurrentUrl();
+        Assert.assertTrue(url.contains("google"), "Not on the right page.");
+    }
+
+    @Override
+    protected void load() {
+        driver.get("https://inbox.google.com");
     }
 
     public void setEmailTextBox(String strUserName) {
